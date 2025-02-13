@@ -16,7 +16,7 @@ def client_fixture(db_session: Session):
 def test_get_products(client: TestClient):
     response = client.get("/api/v1/products")
     assert response.status_code == 200
-    assert isinstance(response.json(), list)
+    assert isinstance(response.json(), dict)
 
 def test_create_product(client: TestClient):
     product_data = {
@@ -28,8 +28,8 @@ def test_create_product(client: TestClient):
     
     response = client.post("/api/v1/products", json=product_data)
     assert response.status_code == 201
-    assert response.json()["name"] == product_data["name"]
-    assert response.json()["price"] == product_data["price"]
+    assert response.json()["data"]["name"] == product_data["name"]
+    assert response.json()["data"]["price"] == product_data["price"]
 
 def test_create_product_invalid_data(client: TestClient):
     product_data = {
@@ -51,7 +51,7 @@ def test_create_order(client: TestClient):
         "stock": 5
     }
     product_response = client.post("/api/v1/products", json=product_data)
-    product_id = product_response.json()["id"]
+    product_id = product_response.json()["data"]["id"]
     
     # Create an order
     order_data = {
@@ -62,8 +62,8 @@ def test_create_order(client: TestClient):
     
     response = client.post("/api/v1/orders", json=order_data)
     assert response.status_code == 201
-    assert len(response.json()["items"]) == 1
-    assert response.json()["total_price"] == 20.0
+    assert len(response.json()["data"]["items"]) == 1
+    assert response.json()["data"]["total_price"] == 20.0
 
 def test_create_order_insufficient_stock(client: TestClient):
     # First create a product with low stock
@@ -74,7 +74,7 @@ def test_create_order_insufficient_stock(client: TestClient):
         "stock": 1
     }
     product_response = client.post("/api/v1/products", json=product_data)
-    product_id = product_response.json()["id"]
+    product_id = product_response.json()["data"]["id"]
     
     # Try to order more than available
     order_data = {
@@ -85,4 +85,4 @@ def test_create_order_insufficient_stock(client: TestClient):
     
     response = client.post("/api/v1/orders", json=order_data)
     assert response.status_code == 400
-    assert "Insufficient stock" in response.json()["detail"]
+    assert "Insufficient stock" in response.json()["detail"]["message"]
