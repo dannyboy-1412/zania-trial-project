@@ -53,15 +53,13 @@ cp .env.example .env
 alembic upgrade head
 ```
 
-
-
-7. Run the application locally
+### Run the application locally
 
 ```bash
 uvicorn src.main:app --reload
 ```
 
-8. Run the Tests
+## Run the Tests
 
 ```bash
 pytest tests/ -v  
