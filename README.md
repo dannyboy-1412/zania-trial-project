@@ -9,20 +9,23 @@ A FastAPI application for managing products with SQLite database and Alembic mig
 
 ## Setup and Installation
 
-### Local Setup
+
+### Setup
 
 1. Clone the repository
 
 ```bash
-git clone <repository-url>
-cd fastapi-product-api
+cd zania-trial-project
 ```
 
 2. Create and activate a virtual environment
 
 ```bash
 python -m venv venv
-source venv/bin/activate # On Windows: venv\Scripts\activate
+# On Windows
+venv\Scripts\activate
+# On macOS/Linux
+source venv/bin/activate
 ```
 
 3. Install dependencies
@@ -31,57 +34,54 @@ source venv/bin/activate # On Windows: venv\Scripts\activate
 pip install -r requirements.txt
 ```
 
+4. Create data directory for SQLite database
 
-4. Create a `.env` file based on `.env.example`
+```bash
+mkdir data
+```
+
+5. Create a `.env` file based on `.env.example` and update the configurations
 
 ```bash
 cp .env.example .env
+# Edit .env file with your configurations
 ```
 
-
-5. Initialize the database and run migrations
+6. Initialize the database and run migrations
 
 ```bash
-alembic init alembic
-alembic migrate
+alembic upgrade head
 ```
 
-6. Run the application
+
+
+7. Run the application locally
 
 ```bash
 uvicorn src.main:app --reload
 ```
 
-7. Run the Tests
+8. Run the Tests
 
 ```bash
 pytest tests/ -v  
 ```
 
-
-
-
 ### Docker Setup
 
-1. Create a `.env` file based on `.env.example`
-
-```bash
-cp .env.example .env
-```
-
-2. Build the Docker image
+1. Build the Docker image
 
 ```bash
 docker build -t fastapi-product-api .
 ```
 
-3. Run the Docker container
+2. Run the Docker container
 
 ```bash
 docker run -d -p 8000:8000 fastapi-product-api
 ```
 
-4. Access the application's API documentation
+### Access the application's API documentation
 
 ```bash
 http://localhost:8000/docs
