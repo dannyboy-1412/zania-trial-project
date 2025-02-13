@@ -1,5 +1,5 @@
 from pydantic import BaseModel, Field, ConfigDict
-from typing import List, Optional
+from typing import List, Optional, Generic, TypeVar
 
 class ProductBase(BaseModel):
     name: str
@@ -32,3 +32,13 @@ class Order(BaseModel):
     total_price: float
     status: str
     model_config = ConfigDict(from_attributes=True)
+
+T = TypeVar('T')
+
+class ResponseModel(BaseModel, Generic[T]):
+    data: Optional[T]
+    error: bool
+    message: str
+
+    class Config:
+        arbitrary_types_allowed = True

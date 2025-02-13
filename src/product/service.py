@@ -17,6 +17,15 @@ class ProductService:
         if product.stock < 0:
             raise ValueError("Stock cannot be negative")
             
+        # Check for existing product with same name and description
+        existing_product = self.db.query(models.Product).filter(
+            models.Product.name == product.name,
+            models.Product.description == product.description
+        ).first()
+        
+        if existing_product:
+            raise ValueError("A product with this name and description already exists")
+            
         try:
             db_product = models.Product(**product.model_dump())
             self.db.add(db_product)
@@ -25,7 +34,7 @@ class ProductService:
             return db_product
         except Exception as e:
             self.db.rollback()
-            raise HTTPException(status_code=500, detail=str(e))
+            raise Exception(f"Failed to create product: {str(e)}")
 
 class OrderService:
     def __init__(self, db: Session):
