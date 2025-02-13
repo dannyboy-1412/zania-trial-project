@@ -70,13 +70,13 @@ pytest tests/ -v
 1. Build the Docker image
 
 ```bash
-docker build -t fastapi-product-api .
+docker build -t zania-trial-project .
 ```
 
 2. Run the Docker container
 
 ```bash
-docker run -d -p 8000:8000 fastapi-product-api
+docker run -d -p 8000:8000 zania-trial-project
 ```
 
 ### Access the application's API documentation
