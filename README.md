@@ -81,8 +81,8 @@ docker build -t fastapi-product-api .
 docker run -d -p 8000:8000 fastapi-product-api
 ```
 
-4. Access the application
+4. Access the application's API documentation
 
 ```bash
-http://localhost:8000/
+http://localhost:8000/docs
 ```
